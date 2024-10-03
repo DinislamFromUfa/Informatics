@@ -1,0 +1,48 @@
+﻿@{
+    ViewData["Title"] = "Добавить курс";
+}
+
+<h1>@ViewData["Title"]</h1>
+
+<div class="container">
+    <form asp-action="Create" method="post">
+        <div class="form-group">
+            <label class="control-label"></label>
+            <input class="form-control" />
+            <span class="text-danger"></span>
+        </div>
+
+        <div class="form-group">
+            <label class="control-label"></label>
+            <textarea class="form-control"></textarea>
+            <span class="text-danger"></span>
+        </div>
+
+        <div class="form-group">
+            <label class="control-label"></label>
+            <input class="form-control" type="date" />
+            <span class="text-danger"></span>
+        </div>
+
+        <div class="form-group">
+            <label class="control-label"></label>
+            <input class="form-control" type="date" />
+            <span class="text-danger"></span>
+        </div>
+
+        <div class="form-group">
+            <label class="control-label"></label>
+            <input class="form-control" type="number" step="0.01" />
+            <span class="text-danger"></span>
+        </div>
+
+        <button type="submit" class="btn btn-primary">Добавить курс</button>
+        <a asp-controller="Home" asp-action="Index" class="btn btn-secondary">Назад</a>
+    </form>
+</div>
+
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+}

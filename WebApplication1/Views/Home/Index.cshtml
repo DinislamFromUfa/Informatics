@@ -1,0 +1,36 @@
+﻿@{
+    ViewBag.Title = "Электронный тренажер по информатике";
+}
+
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="~/Content/bootstrap.min.css" />
+    <link rel="stylesheet" href="~/Content/site.css" />
+</head>
+<body>
+    <header class="bg-primary text-white text-center py-5">
+        <h1>Электронный тренажер по информатике</h1>
+        <img src="~/Photos/logo.png" alt="Логотип" class="img-fluid" />
+    </header>
+
+
+    <main class="container my-5">
+        <h2>Добро пожаловать!</h2>
+        <p>Наш тренажер поможет вам освоить основы информатики и программирования. Начните обучение прямо сейчас!</p>
+
+        <div class="text-center my-4">
+            <a asp-controller="Courses" asp-action="MyCourses" class="btn btn-success btn-lg">Начать обучение</a>
+        </div>
+    </main>
+
+    <footer class="bg-dark text-white text-center py-3">
+        <p>Контактная информация: Амелия Яшелбаева</p>
+        <p>Следите за нами в социальных сетях!</p>
+    </footer>
+
+    <script src="~/Scripts/bootstrap.bundle.min.js"></script>
+</body>
+</html>

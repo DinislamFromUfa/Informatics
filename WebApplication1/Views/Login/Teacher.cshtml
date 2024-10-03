@@ -1,0 +1,25 @@
+﻿@{
+    ViewData["Title"] = "Вход для преподавателя";
+}
+
+<div style="display: flex; justify-content: center; align-items: center; height: 100vh;">
+    <form method="post" asp-controller="Login" asp-action="CheckingOnSite" style="border: 1px solid #ccc; padding: 20px; border-radius: 5px; box-shadow: 0 0 10px rgba(0,0,0,0.1);">
+        <h2 style="text-align: center;">Вход</h2>
+
+        <div>
+            <label for="username">Имя пользователя:</label>
+            <input type="text" name="Username" id="username" required style="width: 100%; padding: 8px; margin-bottom: 10px;" />
+        </div>
+
+        <div>
+            <label for="password">Пароль:</label>
+            <input type="password" name="Password" id="password" required style="width: 100%; padding: 8px; margin-bottom: 10px;" />
+        </div>
+
+        <div style="text-align: center;">
+            <button type="submit" style="padding: 10px 20px; background-color: #007bff; color: white; border: none; border-radius: 5px; cursor: pointer;">
+                Войти
+            </button>
+        </div>
+    </form>
+</div>
