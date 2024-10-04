@@ -1,0 +1,52 @@
+﻿@{
+    ViewData["Title"] = "Регистрация для преподавателя";
+}
+
+<script>
+    function ValidateForm() {
+        var password = document.getElementById("password").value;
+        var confirmPassword = document.getElementById("confirmPassword").value;
+        if (password !== confirmPassword) {
+            alert("Пароли не совпадают!");
+            return false;
+        }
+        else {
+            return true;
+        }
+    }
+</script>
+<div style="display: flex; justify-content: center; align-items: center; height: 100vh;">
+    <form onSubmit="return ValidateForm()" method="post" asp-action="CreateProfileTeacher" style="border: 1px solid #ccc; padding: 20px; border-radius: 5px; box-shadow: 0 0 10px rgba(0,0,0,0.1); width: 300px;">
+        <h2 style="text-align: center;">Регистрация</h2>
+        <div>
+            <label for="username">Имя пользователя:</label>
+            <input type="text" name="username" id="username" required style="width: 100%; padding: 8px; margin-bottom: 10px;" />
+        </div>
+
+        <div>
+            <label for="surname">Фамилия:</label>
+            <input type="text" name="surname" id="username" required style="width: 100%; padding: 8px; margin-bottom: 10px;" />
+        </div>
+
+        <div>
+            <label for="name">Имя:</label>
+            <input type="text" name="name" id="username" required style="width: 100%; padding: 8px; margin-bottom: 10px;" />
+        </div>
+
+        <div>
+            <label for="password">Пароль:</label>
+            <input type="password" name="password" id="password" required style="width: 100%; padding: 8px; margin-bottom: 10px;" />
+        </div>
+
+        <div>
+            <label for="confirmPassword">Подтвердите пароль:</label>
+            <input type="password" name="confirmPassword" id="confirmPassword" required style="width: 100%; padding: 8px; margin-bottom: 10px;" />
+        </div>
+
+        <div style="text-align: center;">
+            <button type="submit" style="padding: 10px 20px; background-color: #007bff; color: white; border: none; border-radius: 5px; cursor: pointer;">
+                Зарегистрироваться
+            </button>
+        </div>
+    </form>
+</div>

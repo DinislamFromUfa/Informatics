@@ -8,8 +8,6 @@ namespace WebApplication1.Configurations
     {
         public void Configure(EntityTypeBuilder<Teacher> builder)
         {
-            builder.HasKey(t => t.Id);
-
             builder
                 .HasMany(t => t.Courses)
                 .WithOne(c => c.Teacher).

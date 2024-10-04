@@ -18,6 +18,7 @@ namespace WebApplication1.Data
         {
             Database.EnsureCreated();
         }
+
         public DbSet<Teacher> Teachers { get; set; }
 
         public DbSet<Student> Students { get; set; }

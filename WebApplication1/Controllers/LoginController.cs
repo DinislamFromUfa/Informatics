@@ -1,6 +1,9 @@
-﻿using Microsoft.AspNetCore.Authorization;
+﻿using Microsoft.AspNetCore.Authentication;
+using Microsoft.AspNetCore.Authentication.Cookies;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using System.Reflection.Metadata.Ecma335;
 using System.Security.Claims;
 using System.Security.Permissions;
 using WebApplication1.Data;
@@ -16,8 +19,9 @@ namespace WebApplication1.Controllers
         }
 
 
-        public IActionResult LoginOnSite() { return View(); }
-
+        public IActionResult LoginOnSite() { 
+            return View();
+        }
 
         public IActionResult Registration()
         {
@@ -29,40 +33,11 @@ namespace WebApplication1.Controllers
         {
             using (var context = new DataBaseContext())
             {
+                student.Role = "Student";
                 context.Students.Add(student);
                 context.SaveChanges();
             }
             return RedirectToAction("LoginOnSite");
-        }
-
-
-        public IActionResult AdminPanel()
-        {
-            return View();
-        }
-
-
-        [HttpPost]
-        public ActionResult CheckingOnSite(string username, string password)
-        {
-
-            if (username == "admin" && password == "admin") {
-                return RedirectToAction("AdminPanel");
-            }
-
-            using (var db = new DataBaseContext())
-            {
-                var student = db.Students.SingleOrDefault(s => s.Username == username && s.Password == password);
-                if (student != null)
-                {
-                    return RedirectToAction("Index","Home");
-                }
-                else
-                {
-                    ModelState.AddModelError("", "Неправильное имя пользователя или пароль.");
-                    return View();
-                }
-            }
         }
 
         public IActionResult Teacher()
@@ -70,5 +45,46 @@ namespace WebApplication1.Controllers
             return View();
         }
 
+        public IActionResult RegistrationForTeacher() { return View(); }
+
+        public IActionResult CreateProfileTeacher(Teacher teacher)
+        {
+            using (var context = new DataBaseContext())
+            {
+                teacher.Role = "Teacher";
+                context.Teachers.Add(teacher);
+                context.SaveChanges();
+            }
+            return RedirectToAction("LoginOnSite");
+        }
+
+
+        public async Task <IActionResult> CheckingOnSite(Student student)
+        {
+            var db = new DataBaseContext();
+            // находим пользователя
+            var user = db.Students.FirstOrDefault(u => u.Username == student.Username && u.Password == student.Password);
+            // если название пользователя и/или пароль не установлены, посылаем статусный код ошибки 400
+            if (user is null)
+            {
+                return RedirectToAction("Error");
+            } 
+            var claims = new List<Claim>
+            {
+                new Claim(ClaimTypes.Name, user.Username),
+                new Claim(ClaimTypes.Role, user.Role),
+            };
+
+            var claimsIdentity = new ClaimsIdentity(claims,
+                CookieAuthenticationDefaults.AuthenticationScheme);
+            var claimsPrincipal = new ClaimsPrincipal(claimsIdentity);
+            await HttpContext.SignInAsync(CookieAuthenticationDefaults.AuthenticationScheme,
+                claimsPrincipal);
+            return RedirectToAction("StudentMainpage", "Student");
+        }
+        public IActionResult Error()
+        {
+            return View();
+        }
     }
 }

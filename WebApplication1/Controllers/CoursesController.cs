@@ -10,5 +10,10 @@ namespace WebApplication1.Controllers
         public IActionResult MyCourses() { return View(); }
 
         public IActionResult AddCourse() { return View(); }
+
+        public IActionResult CreateCourse()
+        {
+            return RedirectToAction("Index", "Home");
+        }
     }
 }
