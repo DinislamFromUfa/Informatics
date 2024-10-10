@@ -16,6 +16,7 @@ namespace WebApplication1.Data
         }
         public DataBaseContext()
         {
+            //Database.EnsureDeleted();
             Database.EnsureCreated();
         }
 
@@ -25,11 +26,14 @@ namespace WebApplication1.Data
 
         public DbSet<Course> Courses { get; set; }
 
+        public DbSet<Lesson> Lessons { get; set; }
+
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             modelBuilder.ApplyConfiguration(new TeacherConfiguration());
             modelBuilder.ApplyConfiguration(new CourseConfiguration());
             modelBuilder.ApplyConfiguration(new StudentConfiguration());
+            modelBuilder.ApplyConfiguration(new LessonConfiguration());
             base.OnModelCreating(modelBuilder);
         }
     }

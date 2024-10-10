@@ -1,0 +1,39 @@
+﻿@model IEnumerable<WebApplication1.Models.Course>
+
+<style>
+    .course-item {
+        display: flex;
+        align-items: center;
+        margin-bottom: 10px;
+    }
+
+    .course-name {
+        margin-right: 15px;
+    }
+
+    .course-actions button {
+        margin-right: 5px;
+    }
+</style>
+
+@foreach (var item in Model)
+{
+    <div class="course-item">
+        <span class="course-name">@item.CourseName</span>
+        <div class="course-actions">
+            <form method="post" action="@Url.Action("EditDetails", "Courses")" style="display:inline;">
+                <input type="hidden" name="courseId" value="@item.Id" />
+                <button type="submit">Редактировать</button>
+            </form>
+            <form method="post" action="@Url.Action("DeleteCourse", "Courses")" style="display:inline;">
+                <input type="hidden" name="courseId" value="@item.Id" />
+                <button type="submit">Удалить курс</button>
+            </form>
+            <form method="get" action="@Url.Action("LessonsOfCourse", "Courses")" style="display:inline;">
+                <input type="hidden" name="courseId" value="@item.Id" />
+                <button type="submit">Просмотреть уроки</button>
+            </form>
+        </div>
+    </div>
+}
+

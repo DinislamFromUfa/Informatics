@@ -1,0 +1,51 @@
+﻿@model WebApplication1.Models.Course
+
+@{
+    ViewData["Title"] = "Детали курса";
+}
+
+<h2>Детали курса: @Model.CourseName</h2>
+
+<div>
+    <dl class="row">
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.Description)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.Description)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.Teacher.Name)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.Teacher.Name)
+        </dd>
+    </dl>
+</div>
+
+<h4>Уроки курса:</h4>
+<table class="table">
+    <thead>
+        <tr>
+            <th>Название урока</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var lesson in Model.Lessons)
+        {
+            <tr>
+                <td>@lesson.Name</td>
+            </tr>
+        }
+    </tbody>
+</table>
+
+<div>
+    @if (User.IsInRole("Student"))
+    {
+        <a href="@Url.Action("SubscribeCourse", new { courseId = Model.Id })">
+            Подписаться на курс
+        </a>
+    }
+    <a asp-action="AllCourses" class="btn btn-secondary">Назад к списку</a>
+</div>

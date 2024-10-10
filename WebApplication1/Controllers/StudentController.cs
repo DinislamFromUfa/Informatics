@@ -7,5 +7,8 @@ namespace WebApplication1.Controllers
     {
         [Authorize(Roles = "Student")]
         public IActionResult StudentMainPage() { return View(); }
+
+
+
     }
 }

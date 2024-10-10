@@ -1,0 +1,49 @@
+﻿@model IEnumerable<WebApplication1.Models.Course>
+
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="utf-8" />
+    <title>Все курсы</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" />
+    <style>
+        .course-card {
+            margin: 15px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            overflow: hidden;
+            transition: transform 0.2s;
+        }
+
+        .course-card:hover {
+            transform: scale(1.05);
+        }
+
+        .course-image {
+            width: 100%;
+            height: 200px;
+            object-fit: cover;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1 class="text-center my-4">Все курсы</h1>
+        <div class="row">
+            @foreach (var course in Model)
+            {
+                <div class="col-md-4">
+                    <div class="course-card">
+                        <a asp-controller="Courses" asp-action="Details" asp-route-id="@course.Id">
+                            <div class="p-3">
+                                <h5>@course.CourseName</h5>
+                                <p>@course.Description</p>
+                            </div>
+                        </a>
+                    </div>
+                </div>
+            }
+        </div>
+    </div>
+</body>
+</html>

@@ -1,0 +1,31 @@
+﻿@model WebApplication1.Models.Lesson
+
+@{
+    ViewData["Title"] = "Добавить новый урок";
+}
+
+<h2>Добавить новый урок</h2>
+
+<form asp-controller="Lesson" asp-action="AddFiles" method="post" enctype="multipart/form-data">
+    <input type="hidden" name="CourseId" value="@Model.CourseId"/>
+
+    <div class="form-group">
+        <label asp-for="Name">Название урока:</label>
+        <input asp-for="Name" class="form-control" />
+        <span asp-validation-for="Name" class="text-danger"></span>
+    </div>
+
+    <div class="form-group">
+        <label asp-for="ContentFiles">Файлы:</label>
+        <input type="file" asp-for="ContentFiles" class="form-control-file" accept=".pdf,.docx,.txt" multiple />
+        <span asp-validation-for="ContentFiles" class="text-danger"></span>
+    </div>
+
+    <button type="submit" class="btn btn-primary">Добавить урок</button>
+</form>
+
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+}

@@ -6,8 +6,8 @@
     function ValidateForm() {
         var password = document.getElementById("password").value;
         var confirmPassword = document.getElementById("confirmPassword").value;
-        if (password !== confirmPassword) {
-            alert("Пароли не совпадают!");
+        if (password !== confirmPassword || password.length < 6) {
+            alert("Пароли не совпадают или длина пароля должна не менее 6 символов!");
             return false;
         }
         else {
@@ -17,10 +17,35 @@
 </script>
 <div style="display: flex; justify-content: center; align-items: center; height: 100vh;">
     <form onSubmit="return ValidateForm()" method="post" asp-action="CreateProfile" style="border: 1px solid #ccc; padding: 20px; border-radius: 5px; box-shadow: 0 0 10px rgba(0,0,0,0.1); width: 300px;">
-        <h2 style="text-align: center;">Регистрация</h2>
+        <h2 style="text-align: center;">Регистрация для студента</h2>
         <div>
             <label for="username">Имя пользователя:</label>
             <input type="text" name="username" id="username" required style="width: 100%; padding: 8px; margin-bottom: 10px;" />
+        </div>
+
+        <div>
+            <label for="lastname">Фамилия:</label>
+            <input type="text" name="lastname" id="username" required style="width: 100%; padding: 8px; margin-bottom: 10px;" />
+        </div>
+
+        <div>
+            <label for="firstname">Имя:</label>
+            <input type="text" name="firstname" id="username" required style="width: 100%; padding: 8px; margin-bottom: 10px;" />
+        </div>
+
+        <div>
+            <label for="middlename">Отчество:</label>
+            <input type="text" name="middlename" id="username" required style="width: 100%; padding: 8px; margin-bottom: 10px;" />
+        </div>
+
+        <div>
+            <label for="email">E-mail:</label>
+            <input type="email" name="email" id="username" required style="width: 100%; padding: 8px; margin-bottom: 10px;" />
+        </div>
+
+        <div>
+            <label for="phone">Телефон:</label>
+            <input type="tel" name="phone" id="username" required style="width: 100%; padding: 8px; margin-bottom: 10px;" />
         </div>
 
         <div>

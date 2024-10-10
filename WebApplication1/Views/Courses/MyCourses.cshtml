@@ -1,10 +1,7 @@
-﻿@{
-    var courses = new List<dynamic>
-    {
-        new { Title = "Основы программирования", Description = "Изучите основы программирования на Python.", Duration = "4 недели" },
-        new { Title = "Веб-разработка", Description = "Создание веб-приложений с использованием HTML, CSS и JavaScript.", Duration = "6 недель" },
-        new { Title = "Алгоритмы и структуры данных", Description = "Изучение основных алгоритмов и структур данных.", Duration = "5 недель" }
-    };
+﻿@model WebApplication1.ViewModels.UserViewModel
+
+@{
+    ViewData["Title"] = "Мои курсы";
 }
 
 <!DOCTYPE html>
@@ -12,22 +9,137 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Мои курсы по информатике</title>
-    <link rel="stylesheet" href="~/css/styles.css"> <!-- Подключение стилей -->
-</head>
-<body>
-    <div class="container">
-        <h1>Мои курсы по информатике</h1>
-        <div class="courses-list">
-            @foreach (var course in courses)
-            {
-                <div class="course-item">
-                    <h2>@course.Title</h2>
-                    <p>@course.Description</p>
-                    <p><strong>Продолжительность:</strong> @course.Duration</p>
-                </div>
+    <title>Мои курсы</title>
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            margin: 0;
+            padding: 20px;
+            background-color: #f4f4f4;
+        }
+
+        h4 {
+            color: #333;
+            margin-bottom: 10px;
+        }
+
+        .table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+            .table th, .table td {
+                padding: 10px;
+                border: 1px solid #ccc;
+                text-align: left;
             }
-        </div>
-    </div>
-</body>
+
+            .table th {
+                background-color: #f0f0f0;
+            }
+
+        a {
+            text-decoration: none;
+            color: #007bff;
+        }
+
+            a:hover {
+                text-decoration: underline;
+            }
+    </style>
+</head>
+@if (User.IsInRole("Student"))
+{
+    <h4>Записанные курсы:</h4>
+    @if (Model.Student.Courses.Any())
+    {
+        foreach (var course in Model.Student.Courses)
+        {
+            <h4>@course.CourseName</h4>
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th>Название урока</th>
+                        <th>Файлы</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @if (course.Lessons.Any())
+                    {
+                        @foreach (var lesson in course.Lessons)
+                        {
+                            <tr>
+                                <td>@lesson.Name</td>
+                                <td>
+                                    @if (lesson.ContentFiles.Any())
+                                    {
+                                        @foreach (var file in lesson.ContentFiles)
+                                        {
+                                            <a href="@Url.Action("DownloadFile", "Lesson", new { filePath = file })">Скачать @file</a>
+
+                                            <br />
+                                        }
+                                    }
+                                    else
+                                    {
+                                        <p>Файлов для этого урока нет.</p>
+                                    }
+                                </td>
+                            </tr>
+                        }
+                    }
+                    else
+                    {
+                        <tr>
+                            <td colspan="2">Уроков для этого курса нет.</td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        }
+    }
+    else
+    {
+        <p>Студент не подписан на курсы.</p>
+    }
+}
+@if (User.IsInRole("Teacher"))
+{
+    <h4>Курсы преподавателя:</h4>
+    @if (Model.Teacher.Courses.Any())
+    {
+        foreach (var course in Model.Teacher.Courses)
+        {
+            <h4>@course.CourseName</h4>
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th>Название урока</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @if (course.Lessons.Any())
+                    {
+                        @foreach (var lesson in course.Lessons)
+                        {
+                            <tr>
+                                <td>@lesson.Name</td>
+                            </tr>
+                        }
+                    }
+                    else
+                    {
+                        <tr>
+                            <td colspan="2">Уроков для этого курса нет.</td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        }
+    }
+    else
+    {
+        <p>Преподаватель не ведет курсы.</p>
+    }
+}
 </html>

@@ -27,6 +27,15 @@ builder.Services.AddAuthorization(options =>
     });
 });
 
+builder.Services.AddAuthorization(options =>
+{
+    options.AddPolicy("Teacher", policy =>
+    {
+        policy.RequireRole("Teacher");
+    });
+});
+
+
 
 builder.Services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
     .AddCookie(options =>
@@ -54,11 +63,15 @@ app.UseRouting();
 
 
 app.UseAuthorization();
+app.UseAuthentication();
+
+
 
 
 app.MapControllerRoute(
     name: "default",
     pattern: "{controller=Home}/{action=Index}/{id?}");
+
 
 
 app.Run();

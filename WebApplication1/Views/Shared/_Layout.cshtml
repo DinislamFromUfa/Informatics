@@ -19,34 +19,48 @@
                 <div class="navbar-collapse collapse d-sm-inline-flex justify-content-between">
                     <ul class="navbar-nav flex-grow-1">
                         <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Index">Home</a>
+                            <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Index">Главная</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Login" asp-action="LoginOnSite">Вход</a>
+                            <a class="nav-link text-dark" asp-area="" asp-controller="Courses" asp-action="AllCourses">Курсы</a>
                         </li>
-                        @if (User.IsInRole("Teacher"))
-                        {
-                            <li class="nav-item">
-                                <a class="nav-link text-dark" asp-area="" asp-controller="Courses" asp-action="AddCourse">Добавить курс</a>
-                            </li>
-                        }
-                        @if (User.IsInRole("Student"))
+                        @if (User.IsInRole("Student") || User.IsInRole("Teacher"))
                         {
                             <li class="nav-item">
                                 <a class="nav-link text-dark" asp-area="" asp-controller="Courses" asp-action="MyCourses">Мои курсы</a>
                             </li>
                             <li class="nav-item">
-                                <a class="nav-link text-dark" asp-area="" asp-controller="Courses" asp-action="AddCourse">Уроки курса</a>
+                                <a class="nav-link text-dark" asp-area="" asp-controller="Courses" asp-action="PersonalAccount">Личный кабинет</a>
+                            </li>
+                        }
+                        @if (!User.IsInRole("Student") && !User.IsInRole("Teacher"))
+                        {
+                            <li class="nav-item">
+                                <a class="nav-link text-dark" asp-area="" asp-controller="Login" asp-action="LoginOnSite">Вход</a>
+                            </li>
+                        } else
+                        {
+                            <li class="nav-item">
+                                <a class="nav-link text-dark" asp-area="" asp-controller="Login" asp-action="LogOut">Выйти</a>
+                            </li>
+                        }
+                        @if (User.IsInRole("Teacher"))
+                        {
+                            <li class="nav-item">
+                                <a class="nav-link text-dark" asp-area="" asp-controller="Courses" asp-action="AddNewCourse">Добавить курс</a>
                             </li>
                             <li class="nav-item">
-                                <a class="nav-link text-dark" asp-area="" asp-controller="Courses" asp-action="AddCourse">Добавить отзыв на курс</a>
+                                <a class="nav-link text-dark" asp-area="" asp-controller="Courses" asp-action="EditCourse">Редактировать курс</a>
                             </li>
+                        }
+                        @if (User.IsInRole("Student"))
+                        {
                             <li class="nav-item">
-                                <a class="nav-link text-dark" asp-area="" asp-controller="Courses" asp-action="AddCourse">Личный кабинет</a>
+                                <a class="nav-link text-dark" asp-area="" asp-controller="Courses" asp-action="AddReview">Добавить отзыв на курс</a>
                             </li>
                         }
                         <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Courses" asp-action="AddCourse">Отзывы на курсы</a>
+                            <a class="nav-link text-dark" asp-area="" asp-controller="Courses" asp-action="ReviewOnCourse">Отзывы на курсы</a>
                         </li>
                     </ul>
                 </div>

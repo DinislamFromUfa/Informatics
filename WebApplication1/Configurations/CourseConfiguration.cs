@@ -13,6 +13,9 @@ namespace WebApplication1.Configurations
             builder
                 .HasMany(c => c.ListOfStudentsOnCourse)
                 .WithMany(s => s.Courses);
+            builder
+                .HasMany(c => c.Lessons)
+                .WithOne(l => l.Course).HasForeignKey(l => l.CourseId);
         }
     }
 }
