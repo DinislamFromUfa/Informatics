@@ -10,8 +10,8 @@ namespace WebApplication1.Configurations
         {
             builder
                 .HasMany(t => t.Courses)
-                .WithOne(c => c.Teacher).
-                HasForeignKey(t => t.TeacherId);
+                .WithOne(c => c.Teacher)
+                .HasForeignKey(t => t.TeacherId);
         }
     }
 }

@@ -1,0 +1,59 @@
+﻿@model WebApplication1.Models.ReviewOnCourse
+
+@{
+    ViewData["Title"] = "Создать отзыв";
+}
+
+<h2>Создать отзыв</h2>
+<form asp-action="CreateReview" asp-controller="Courses" method="post">
+    <div class="form-group">
+        <label asp-for="CourseId">Выберите курс:</label>
+        <select asp-for="CourseId" class="form-control" required>
+            <option value="">-- Выберите курс --</option>
+            @foreach (var course in ViewBag.Courses) // Используем ViewBag для передачи списка курсов
+            {
+                <option value="@course.Id">@course.CourseName</option>
+            }
+        </select>
+    </div>
+
+    <div class="form-group">
+        <label asp-for="Content">Содержание отзыва:</label>
+        <textarea asp-for="Content" class="form-control" required></textarea>
+    </div>
+
+    <div class="form-group">
+        <label asp-for="Rating">Рейтинг:</label>
+        <select asp-for="Rating" class="form-control" required>
+            <option value="">-- Выберите рейтинг --</option>
+            <option value="1">1</option>
+            <option value="2">2</option>
+            <option value="3">3</option>
+            <option value="4">4</option>
+            <option value="5">5</option>
+        </select>
+    </div>
+
+    <button type="submit" class="btn btn-primary">Отправить отзыв</button>
+</form>
+
+<h3>Существующие отзывы</h3>
+<table class="table">
+    <thead>
+        <tr>
+            <th>Курс</th>
+            <th>Содержание</th>
+            <th>Рейтинг</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var review in ViewBag.Reviews) // Предполагается, что вы передаете существующие отзывы через ViewBag
+        {
+            <tr>
+                <td>@review.Course?.CourseName</td>
+                <td>@review.Content</td>
+                <td>@review.Rating</td>
+            </tr>
+        }
+    </tbody>
+</table>

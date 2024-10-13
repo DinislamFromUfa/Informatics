@@ -11,6 +11,16 @@ namespace WebApplication1.Configurations
 
             builder
                 .HasMany(s => s.Courses);
+
+            builder
+                .HasMany(s => s.Grades)
+                .WithOne(v => v.Student)
+                .HasForeignKey(v => v.StudentId);
+
+            builder
+                .HasMany(s => s.Reviews)
+                .WithOne(r => r.Student)
+                .HasForeignKey(r => r.StudentId);
         }
     }
 }

@@ -8,7 +8,13 @@ namespace WebApplication1.Configurations
     {
         public void Configure(EntityTypeBuilder<Lesson> builder)
         {
-            builder.HasKey(l => l.Id);
+            builder
+                .HasKey(l => l.Id);
+
+            builder
+                .HasOne(l => l.Homework)
+                .WithOne(h => h.Lesson)
+                .HasForeignKey<Homework>(h => h.LessonId);
         }
     }
 }

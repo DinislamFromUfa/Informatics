@@ -19,5 +19,7 @@ namespace WebApplication1.Models
         public List<Student> ListOfStudentsOnCourse { get; set; } = [];
 
         public List<Lesson> Lessons { get; set; } = [];
+
+        public List<ReviewOnCourse> Reviews { get; set; } = [];
     }
 }

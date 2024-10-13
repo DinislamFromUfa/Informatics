@@ -1,1 +1,43 @@
-﻿<h1>Отзывы на курсы</h1>
+﻿@model List<WebApplication1.Models.ReviewOnCourse>
+
+@{
+    ViewData["Title"] = "Отзывы о курсах";
+}
+
+<h2>Отзывы о курсах</h2>
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>Курс</th>
+            <th>Содержание отзыва</th>
+            <th>Рейтинг</th>
+            <th>Псевдоним студента</th>
+        </tr>
+    </thead>
+    <tbody>
+        @if (Model != null && Model.Any())
+        {
+            foreach (var review in Model)
+            {
+                <tr>
+                    <td>@review.Course?.CourseName</td> <!-- Наименование курса -->
+                    <td>@review.Content</td> <!-- Содержание отзыва -->
+                    <td>@review.Rating</td> <!-- Рейтинг -->
+                    <td>@review.Student?.Username</td> <!-- Псевдоним студента -->
+                </tr>
+            }
+        }
+        else
+        {
+            <tr>
+                <td colspan="4" class="text-center">Нет отзывов для отображения.</td>
+            </tr>
+        }
+    </tbody>
+</table>
+
+@if (User.IsInRole("Student"))
+{
+    <a href="@Url.Action("CreateReview", "Courses")" class="btn btn-primary">Добавить отзыв</a>
+}

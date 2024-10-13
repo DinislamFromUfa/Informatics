@@ -61,6 +61,8 @@
                     <tr>
                         <th>Название урока</th>
                         <th>Файлы</th>
+                        <th>Домашняя работа</th>
+                        <th>Оценка за домашнюю работу</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -76,13 +78,32 @@
                                         @foreach (var file in lesson.ContentFiles)
                                         {
                                             <a href="@Url.Action("DownloadFile", "Lesson", new { filePath = file })">Скачать @file</a>
-
                                             <br />
                                         }
                                     }
                                     else
                                     {
                                         <p>Файлов для этого урока нет.</p>
+                                    }
+                                </td>
+                                <td>
+                                    @if (lesson.Homework != null)
+                                    {
+                                        <a href="@Url.Action("DoHomework", "Lesson", new { id = lesson.Homework.Id })">Пройти домашнюю работу</a>
+                                    }
+                                    else
+                                    {
+                                        <p>Домашняя работа еще не задана</p>
+                                    }
+                                </td>
+                                <td>
+                                    @if (lesson.Homework != null)
+                                    {
+                                        @lesson.Homework.ValueOfHomework?.Grade
+                                    }
+                                    else
+                                    {
+                                        <p>Вы еще не сделали домашнюю работу</p>
                                     }
                                 </td>
                             </tr>

@@ -37,5 +37,9 @@ namespace WebApplication1.Models
 
         public List<Course> Courses { get; set; } = [];
 
+        public List<ValueOfHomework> Grades { get; set; } = [];
+
+        public List<ReviewOnCourse> Reviews { get; set; } = [];
+
     }
 }

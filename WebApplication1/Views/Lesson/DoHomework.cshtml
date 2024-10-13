@@ -1,0 +1,46 @@
+﻿@model WebApplication1.Models.Homework
+
+<style>
+    body {
+        font-family: 'Arial', sans-serif;
+        background-color: #f4f4f4;
+    }
+
+    .container {
+        margin-top: 50px;
+    }
+
+    .form-horizontal .control-label {
+        text-align: right;
+        font-weight: bold;
+    }
+
+    .form-control {
+        margin-bottom: 15px;
+    }
+
+    .btn-primary {
+        background-color: #28a745;
+        border-color: #28a745;
+    }
+</style>
+<form asp-controller="Lesson" asp-action="CheckHomework" asp-route-id="@Model.Id" class="form-horizontal">
+    @for (int i = 0; i < Model.Question.Count; i++)
+    {
+        <div class="form-group">
+            <label class="col-sm-2 control-label">@Model.Question[i]</label>
+            <div class="col-sm-10">
+                @for (int j = 0; j < Math.Min(3, Model.Answer.Count / Model.Question.Count); j++)
+                {
+                    <input type="radio" name="Answers[@i]" value="@(j + 1)" />
+                    <label>@Model.Answer[i * 3 + j]</label> <br />
+                }
+            </div>
+        </div>
+    }
+    <div class="form-group">
+        <div class="col-sm-offset-2 col-sm-10">
+            <button type="submit" class="btn btn-primary">Отправить на проверку</button>
+        </div>
+    </div>
+</form>

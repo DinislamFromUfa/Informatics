@@ -103,5 +103,129 @@ namespace WebApplication1.Controllers
             await db.SaveChangesAsync();
             return RedirectToAction("EditCourse", "Courses");
         }
+
+        public IActionResult AddHomeWork(Guid lessonId)
+        {
+            var homework = new Homework
+            {
+                LessonId = lessonId,
+                Question = new List<string>(),
+                Answer = new List<string>(),
+                CorrectAnswer = new List<int>()
+            };
+            return View(homework);
+        }
+
+
+        [HttpPost]
+        public async Task<IActionResult> CreateHomeworkTeacher(List<string> question, List<string> answer, List<int> correctanswer, Guid lessonid)
+        {
+            var db = new DataBaseContext();
+            if (ModelState.IsValid)
+            {
+                // Проверяем, что количество вопросов, ответов и правильных ответов совпадает
+                if (question.Count != answer.Count / 3 ||
+                    question.Count != correctanswer.Count)
+                {
+                    ModelState.AddModelError("", "Неправильное количество данных в форме.");
+                    return View("CreateHomeworkTeacher"); // Вернуть представление с ошибкой
+                }
+
+                // Проверяем, что правильный ответ выбран для каждого вопроса
+                for (int i = 0; i < question.Count; i++)
+                {
+                    if (correctanswer[i] < 1 || correctanswer[i] > 3)
+                    {
+                        ModelState.AddModelError("", $"Неверный правильный ответ для вопроса {i + 1}");
+                        return View("CreateHomeworkTeacher"); // Вернуть представление с ошибкой
+                    }
+                }
+
+                // Создание новой домашней работы
+                var homework = new Homework
+                {
+                    LessonId = lessonid,
+                    Question = question,
+                    Answer = answer,
+                    CorrectAnswer = correctanswer
+                };
+
+                // Сохранение домашней работы в базу данных
+                db.Add(homework);
+                await db.SaveChangesAsync();
+
+                // Перенаправляем на страницу с уроками 
+                return RedirectToAction("Index", "Home");
+            }
+
+            return View("CreateHomeworkTeacher");
+        }
+
+        public async Task<IActionResult> DoHomework(int id)
+        {
+            var db = new DataBaseContext();
+            var homework = await db.Homeworks.FindAsync(id);
+            return View(homework);
+        }
+
+
+        // id в этом месте это id домашней работы
+        public async Task<IActionResult> CheckHomework(int id, List<int> answers)
+        {
+            var db = new DataBaseContext();
+            var homework = await db.Homeworks.FindAsync(id);
+
+            int correctAnswers = 0;
+
+            for (int i = 0; i < homework.Question.Count; i++)
+            {
+                int correctAnswerIndex = homework.CorrectAnswer[i] - 1;
+                if (answers[i] - 1 == correctAnswerIndex)
+                {
+                    correctAnswers++;
+                }
+            }
+
+            int valueofhomework = CalculateGrade(correctAnswers);
+
+            var studentid = Request.Cookies["Cookie"];
+
+            var Grade = new ValueOfHomework
+            {
+                HomeworkId = Convert.ToInt32(id),
+                Grade = valueofhomework,
+                StudentId = Guid.Parse(studentid),
+                Homework = homework,
+            };
+
+            db.ValuesOfHomework.Add(Grade);
+            await db.SaveChangesAsync();
+            return RedirectToAction("Index", "Home");
+        }
+
+        private int CalculateGrade(int correctAnswersCount)
+        {
+            if (correctAnswersCount >= 8)
+            {
+                return 5;
+            }
+            else if (correctAnswersCount >= 7)
+            {
+                return 4;
+            }
+            else if (correctAnswersCount >= 6)
+            {
+                return 3;
+            }
+            else if (correctAnswersCount >= 5)
+            {
+                return 2;
+            }
+            else
+            {
+                return 2; // Или "Неудовлетворительно" 
+            }
+        }
+
     }
 }

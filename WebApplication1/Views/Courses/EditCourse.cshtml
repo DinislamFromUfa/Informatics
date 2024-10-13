@@ -29,10 +29,6 @@
                 <input type="hidden" name="courseId" value="@item.Id" />
                 <button type="submit">Удалить курс</button>
             </form>
-            <form method="get" action="@Url.Action("LessonsOfCourse", "Courses")" style="display:inline;">
-                <input type="hidden" name="courseId" value="@item.Id" />
-                <button type="submit">Просмотреть уроки</button>
-            </form>
         </div>
     </div>
 }

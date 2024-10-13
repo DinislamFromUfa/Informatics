@@ -28,12 +28,20 @@ namespace WebApplication1.Data
 
         public DbSet<Lesson> Lessons { get; set; }
 
+        public DbSet<Homework> Homeworks { get; set; }
+
+        public DbSet<ValueOfHomework> ValuesOfHomework { get; set; }
+
+        public DbSet<ReviewOnCourse> ReviewOnCourses { get; set; }
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             modelBuilder.ApplyConfiguration(new TeacherConfiguration());
             modelBuilder.ApplyConfiguration(new CourseConfiguration());
             modelBuilder.ApplyConfiguration(new StudentConfiguration());
             modelBuilder.ApplyConfiguration(new LessonConfiguration());
+            modelBuilder.ApplyConfiguration(new HomeworkConfiguration());
+            modelBuilder.ApplyConfiguration(new ValueOfHomeworkConfiguration());
+            modelBuilder.ApplyConfiguration(new ReviewOnCourseConfiguration());
             base.OnModelCreating(modelBuilder);
         }
     }

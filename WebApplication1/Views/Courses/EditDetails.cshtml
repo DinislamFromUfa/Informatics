@@ -82,7 +82,7 @@
 
 <h2>Редактирование деталей курса: @Model.CourseName</h2>
 
-<form asp-controller="Courses" asp-action="UpdateDetails" asp-route-id="@Model.Id" method="post">
+<form asp-controller="Courses" asp-action="UpdateDetails" method="post">
     <input type="hidden" asp-for="Id" />
 
     <div class="form-group">
@@ -116,11 +116,11 @@
                         </div>
                     }
                     <div>
-                        <a href="@Url.Action("UpdateLesson", "Lesson", new { lessonId = lesson.Id })">
-                            Редактировать урок
-                        </a>
                         <a href="@Url.Action("DeleteLesson", "Lesson", new { lessonId = lesson.Id })">
                             Удалить урок
+                        </a>
+                        <a href="@Url.Action("AddHomeWork", "Lesson", new {lessonId = lesson.Id})">
+                            Добавить домашнюю работу
                         </a>
                     </div>
                 }

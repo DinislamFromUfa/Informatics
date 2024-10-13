@@ -13,5 +13,7 @@ namespace WebApplication1.Models
         public Course? Course { get; set; }
 
         public List<string> ContentFiles { get; set; }
+
+        public Homework? Homework { get; set; }
     }
 }

@@ -25,8 +25,10 @@ namespace WebApplication1.Controllers
                 var StudentId = Request.Cookies["Cookie"];
                 var student = await db.Students
                     .Include(s => s.Courses)
-                    .ThenInclude(c => c.Lessons)
-                    .FirstOrDefaultAsync(s => s.Id == Guid.Parse(StudentId));
+                        .ThenInclude(c => c.Lessons)
+                        .ThenInclude(l => l.Homework)
+                        .ThenInclude(v => v.ValueOfHomework)
+                        .FirstOrDefaultAsync(s => s.Id == Guid.Parse(StudentId));
                 return View(new UserViewModel
                 {
                     Student = student,
@@ -95,8 +97,6 @@ namespace WebApplication1.Controllers
             var courses = await db.Courses.Where(c => c.TeacherId == Guid.Parse(CookieIdTeacher)).ToListAsync();
             return View(courses);
         }
-
-        public IActionResult ReviewOnCourse() { return View(); }
 
         public async Task<IActionResult> PersonalAccount()
         { 
@@ -183,14 +183,68 @@ namespace WebApplication1.Controllers
             return RedirectToAction("MyCourses");
         }
 
-        public async Task<IActionResult> UpdateDetails(Guid courseId, string nameofcourse, string description) {
+        public async Task<IActionResult> UpdateDetails(Guid id, string coursename, string description) {
             var db = new DataBaseContext();
             await db.Courses
-                .Where(c => c.Id == courseId)
-                .ExecuteUpdateAsync(c => c.SetProperty(c => c.CourseName, nameofcourse)
+                .Where(c => c.Id == id)
+                .ExecuteUpdateAsync(c => c.SetProperty(c => c.CourseName, coursename)
                 .SetProperty(c => c.Description, description));
             await db.SaveChangesAsync();
             return RedirectToAction("EditCourse");
+        }
+
+        public async Task<IActionResult> AddReview()
+        {
+            var db = new DataBaseContext();
+            var studentId = Request.Cookies["Cookie"];
+            var courses = await db.Courses
+                .Where(c => c.ListOfStudentsOnCourse.Any(s => s.Id == Guid.Parse(studentId)))
+                .ToListAsync();
+
+            ViewBag.Courses = courses;
+
+            var reviews = await db.ReviewOnCourses
+            .Where(r => r.StudentId == Guid.Parse(studentId))
+            .Include(r => r.Course) // Включаем курс для отображения его названия
+            .ToListAsync();
+
+            ViewBag.Reviews = reviews;
+
+            return View(new ReviewOnCourse());
+        }
+
+
+        [HttpPost]
+        public async Task<IActionResult> CreateReview(ReviewOnCourse review)
+        {
+            using (var db = new DataBaseContext())
+            {
+
+                 review.Id = Guid.NewGuid(); // Генерируем новый идентификатор для отзыва
+                 review.StudentId = Guid.Parse(Request.Cookies["Cookie"]); // Получаем идентификатор студента из куки
+
+                 db.ReviewOnCourses.Add(review); // Добавляем отзыв в контекст
+                 try
+                 {
+                     await db.SaveChangesAsync(); // Сохраняем изменения в базе данных
+                     return RedirectToAction("Index", "Home"); // Перенаправление после успешного сохранения
+                 }
+                 catch (DbUpdateException)
+                 {
+                     ModelState.AddModelError("", "Произошла ошибка при сохранении отзыва.");
+                 }
+            }
+            return View(review);
+        }
+
+        public async Task<IActionResult> ReviewOnCourse()
+        {
+            var db = new DataBaseContext();
+            List<ReviewOnCourse> reviews = await db.ReviewOnCourses
+                .Include(r => r.Course)
+                .Include(r => r.Student)
+                .ToListAsync();
+            return View(reviews);
         }
     }
 }
